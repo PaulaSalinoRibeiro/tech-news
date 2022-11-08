@@ -1,6 +1,7 @@
 import requests
 import time
 from parsel import Selector
+from tech_news.database import create_news
 
 
 def fetch(url):
@@ -53,15 +54,27 @@ def scrape_noticia(html_content):
     }
 
 
-# Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    url = "https://blog.betrybe.com"
+    news = []
+    page = 0
+
+    while page < amount:
+        html_content = fetch(url)
+        link_news_by_page = scrape_novidades(html_content)
+
+        for link in link_news_by_page:
+            if page == amount:
+                break
+            new = scrape_noticia(fetch(link))
+            news.append(new)
+            page += 1
+
+        url = scrape_next_page_link(html_content)
+
+    create_news(news)
+    return news
 
 
-if __name__ == "__main__":
-    html_content = fetch(
-        "https://blog.betrybe.com/noticias/bill-gates-e-cetico-sobre-criptomoedas-e-nfts-entenda-o-motivo/"
-    )
-    # print(scrape_novidades(html_content))
-    # print(scrape_next_page_link(html_content))
-    print(scrape_noticia(html_content))
+# if __name__ == "__main__":
+#     # print(get_tech_news(4))
