@@ -1,9 +1,11 @@
-# Requisito 6
+from tech_news.database import search_news
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    news = search_news({"title": {"$regex": title, "$options": "i"}})
+    return [(new["title"], new["url"]) for new in news]
 
 
-# Requisito 7
 def search_by_date(date):
     """Seu código deve vir aqui"""
 
@@ -16,3 +18,7 @@ def search_by_tag(tag):
 # Requisito 9
 def search_by_category(category):
     """Seu código deve vir aqui"""
+
+
+if __name__ == "__main__":
+    print(search_by_title("BACANA"))
