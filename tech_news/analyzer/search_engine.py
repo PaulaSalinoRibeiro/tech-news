@@ -26,7 +26,8 @@ def search_by_tag(tag):
 
 
 def search_by_category(category):
-    pass
+    news = search_news({"category": {"$regex": category, "$options": "i"}})
+    return [(new["title"], new["url"]) for new in news]
 
 
 # if __name__ == "__main__":
