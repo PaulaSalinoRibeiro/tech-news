@@ -19,7 +19,10 @@ def search_by_date(date):
 
 
 def search_by_tag(tag):
-    pass
+    news = search_news(
+        {"tags": {"$elemMatch": {"$regex": tag, "$options": "i"}}}
+    )
+    return [(new["title"], new["url"]) for new in news]
 
 
 def search_by_category(category):
